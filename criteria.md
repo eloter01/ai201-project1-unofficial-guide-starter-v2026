@@ -55,41 +55,63 @@ in at least 4 of 5 tries.
 
 ---
 
-## 4. Something about your chunks
+## 4. Chunks follow section boundaries
 
-<!-- YOU WRITE THIS ONE.
-
-     How would you know if your chunks were the right size? Name something
-     countable or observable.
-
-     Examples of the right shape — don't copy these, they should come from
-     what you actually saw in Milestone 3:
-       - "At least 4 of 5 sampled chunks read as a complete thought, with no
-          sentence cut in half at either end."
-       - "No chunk is shorter than 200 characters, since anything below that
-          in my corpus turned out to be a heading with no content under it." -->
-
-
+Every chunk begins at a `##` section heading and contains that section's text
+and nothing from any other section. No chunk is shorter than 200 characters.
 
 **Why this target:**
 
+Nine of the fourteen guides in `city_guides` use the same seven headings —
+Getting there, Getting around, Eat and drink, What to see, Where to stay, When
+to go, Practical notes — and each section is one self-contained topic of
+roughly 150 to 350 characters. The answer to a question about a town's shops is
+the whole of that town's "Eat and drink" section and none of its neighbours.
 
+The starter's 800-character splitter ignores all of that. It cuts mid-sentence
+and mid-section, and it leaves tails of 24 characters on `guide_eating.md` and
+41 on `guide_elder_ness.md` — half a sentence with nothing around it, which can
+still be retrieved and can never answer anything. That's where the 200
+character floor comes from: it is below every real section in this corpus and
+above every fragment the blind splitter produces.
+
+This one is all-or-nothing rather than "4 of 5" because it is a mechanical
+property of my chunker, not a judgement about an answer. I can check it over
+every chunk, so there's no reason to accept exceptions. It predicts a count too:
+around 100 chunks instead of the 51 I have now, which also makes `TOP_K` of 5 a
+more selective slice than the tenth of the corpus it is today.
+
+I picked this over "4 of 5 sampled chunks read as a complete thought" because I
+couldn't trust myself to score that the same way twice. Starting at a heading is
+something I can count.
 
 ---
 
-## 5. Your choice
+## 5. Answers name the document the answer actually came from
 
-<!-- YOU WRITE THIS ONE TOO.
-
-     Pick something you actually care about getting right. It could be about
-     speed, about refusals, about a particular kind of question your corpus
-     handles badly, about source attribution being correct rather than merely
-     present — anything, as long as it names a number or an observable
-     outcome. -->
-
-
+For at least 4 of my 5 test questions, the answer names the document that
+actually contains the answer — not merely some document.
 
 **Why this target:**
+
+Criterion 2 only asks that an answer names *a* source, and this corpus makes
+that trivially passable while being wrong. Nine of the guides carry a
+byte-identical "Practical notes" paragraph, including the sentence "The nearest
+full hospital is in Brightwater" — `guide_marchwood.md` says it about itself,
+while `guide_accessibility.md` says the nearest full hospital is in Marchwood.
+So an answer can cite a real filename, read fluently, and still be about the
+wrong town. Naming a source and naming the right source are different
+properties and only the second one is worth anything to someone reading the
+answer.
+
+I expect this to be the hardest of my five, because those nine near-identical
+paragraphs are exactly what embedding-based retrieval clusters on. 4 of 5 rather
+than 5 of 5 is my allowance for the hospital question specifically — I have one
+document giving the regional answer against nine repeating the local one, and I
+would rather write down now that I expect it to fail than discover it later.
+
+It costs nothing to measure: `run_eval.py` already writes a "Sources retrieved"
+line for every question on every run, three runs per question.
 
 
 
