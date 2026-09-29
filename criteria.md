@@ -23,8 +23,15 @@ For at least 4 of my 5 test questions, the retrieved chunks include one that
 contains the answer.
 
 **Why this target:**
-<!-- e.g. "One of my questions is about a topic only two documents mention, so
-     I expect that one to be hard." -->
+
+Four of my five answers sit in a single sentence in a single document, in close
+to the words I asked in — `guide_walking.md` says "the most-walked route in the
+region", `guide_regional_transport.md` says "six on Sundays". Those should
+retrieve easily.
+
+The fifth is the hospital question, where one document gives the regional answer
+and nine repeat a different local one. I expect that to be the miss, which is
+why this is 4 of 5 and not 5 of 5.
 
 ---
 
@@ -33,8 +40,14 @@ contains the answer.
 Every answer the system produces names at least one source document.
 
 **Why this target:**
-<!-- Why all five and not four? What about your setup makes that achievable —
-     or what would have to go wrong for it not to be? -->
+
+The pipeline does most of this for me. `build_prompt` labels every retrieved
+chunk `[from filename]`, and the system instruction tells the model to name the
+document it used, so the filename is in front of the model on every call.
+
+Failing would mean the model ignoring an explicit instruction about material it
+can see. That's rare enough that allowing myself one miss would be setting a
+target I can't fail — so all five.
 
 ---
 
@@ -50,8 +63,14 @@ in at least 4 of 5 tries.
      just keep five of them, or the "4 of 5" above has nothing to be 4 of. -->
 
 **Why this target:**
-<!-- What did your distances look like when you set the cutoff in Milestone 4?
-     Was there a clean gap, or did the two groups overlap? -->
+
+Written before I've measured anything — I'll add what the two groups of
+distances actually looked like when I set the cutoff in Milestone 4.
+
+4 of 5 rather than 5 of 5 because my corpus is a regional travel guide, full of
+town names, geography and transport, and one of my out-of-scope questions asks
+for the capital of Mongolia. That's a geography question put to a geography
+corpus, so I expect it to land closer to my documents than the other four do.
 
 ---
 
