@@ -1,6 +1,6 @@
 # The Unofficial Guide
 
-<!-- Replace this line with your name and which corpus you picked. -->
+Edwin Lotero — `city_guides`
 
 > **This file is your submission.** Fill it in as you go — most sections get
 > written during the milestone that produces them, not at the end.
@@ -20,6 +20,15 @@
 # Unit 1
 
 ## What This Does
+
+This system answers questions about a made-up travel region, using the
+`city_guides` corpus: nine town guides and five guides that cover the whole
+region (eating, walking, transport, seasons and accessibility). It handles the
+practical questions a visitor asks, such as how to get to a town, where to eat
+or stay, when to go, and how accessible a place is. It finds the guide sections
+closest to the question and answers from those alone, naming the file each
+answer came from. If nothing in the guides is close enough, it says "I don't
+have enough information about that" instead of guessing.
 
 <!-- Three or four sentences. Which corpus you picked, and the kinds of
      questions your system answers. Write it for someone who has never seen
