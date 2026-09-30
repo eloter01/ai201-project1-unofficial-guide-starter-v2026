@@ -175,7 +175,20 @@ most accessible town on foot.
 ```
 ```
 
-**My relevance cutoff:**
+**My relevance cutoff:** 0.67
+
+My five test questions all scored between 0.334 and 0.536. The five
+out-of-scope questions scored between 0.810 and 0.967. That leaves a gap from
+0.536 to 0.810, and I put the cutoff in the middle of it, so there is about
+0.13 of room on each side. The starter's 0.6 was also in the gap, but only
+0.064 above my weakest question, so a slightly reworded version of it could
+have been refused.
+
+The closest out-of-scope question was the capital of Mongolia, as I predicted
+in criterion 3: it is a geography question put to a geography corpus.
+
+I kept top-k at 5. That brings back a chunk with the answer for 4 of my 5
+questions. The railway answer is at rank 9, and I've left that miss for unit 2.
 
 <!-- The number you set in config.py, and how you got there.
 
@@ -188,7 +201,16 @@ most accessible town on foot.
 
 | Question | In corpus? | Best distance |
 |---|---|---|
-|  |  |  |
+| What is the easiest town in the region? | Yes | 0.536 |
+| Where is the nearest full hospital? | Yes | 0.334 |
+| How many shops does Elder Ness have? | Yes | 0.343 |
+| How many services does the railway have on Sundays? | Yes | 0.468 |
+| What is the most walked route in the region? | Yes | 0.452 |
+| What is the capital of Mongolia? | No | 0.810 |
+| How do I change the oil in a diesel engine? | No | 0.883 |
+| Who won the 1994 World Cup? | No | 0.967 |
+| What is the recommended dosage of ibuprofen for a headache? | No | 0.834 |
+| How do I write a for loop in Rust? | No | 0.847 |
 
 ## How I Used AI
 
