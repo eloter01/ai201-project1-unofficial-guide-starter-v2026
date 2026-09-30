@@ -22,10 +22,19 @@ to it, write down what you saw, and move on. That's a real observation about
 your pipeline, not giving up.
 """
 
+import re
 from dataclasses import dataclass
+from pathlib import Path
 
 import config
 from ingest import Document
+
+_TITLE_LINE = re.compile(r"\A#[ \t]+(?P<title>[^\n]+)")
+_SECTION_HEADING = re.compile(r"^##[ \t]+(?P<heading>[^\n]+)$", re.MULTILINE)
+
+# The paragraph between a guide's title and its first "##" heading has no
+# heading of its own. Naming it lets it stand as a section like the others.
+INTRO_HEADING = "Overview"
 
 
 @dataclass
@@ -78,6 +87,74 @@ def fallback_split(
             start += chunk_size - overlap
 
     return chunks
+
+
+@dataclass(frozen=True)
+class Section:
+    """One headed part of a guide, such as Halden Bay's "Getting there"."""
+
+    guide_title: str
+    heading: str
+    body: str
+
+
+def _split_title(document: Document) -> tuple[str, str]:
+    """
+    Separate a guide's "# Title" line from the text beneath it.
+
+    Args:
+        document: The guide to split.
+
+    Returns:
+        The title and the text after it. A guide with no title line is
+        titled by its filename stem instead, so its sections still say
+        which guide they belong to.
+    """
+    match = _TITLE_LINE.match(document.text)
+    if match is None:
+        return Path(document.source).stem, document.text
+    return match.group("title").strip(), document.text[match.end():]
+
+
+def parse_sections(document: Document) -> list[Section]:
+    """
+    Break one guide into its headed sections, in reading order.
+
+    Text before the first "##" heading becomes an "Overview" section. A
+    heading with nothing under it is dropped, because on its own it would
+    be a chunk that can answer nothing.
+
+    Args:
+        document: A guide as loaded by `ingest.load_documents`.
+
+    Returns:
+        The guide's non-empty sections. A guide with no "##" headings comes
+        back as a single "Overview" section.
+
+    Raises:
+        TypeError: If `document` is not a `Document`.
+    """
+    if not isinstance(document, Document):
+        raise TypeError(
+            f"expected a Document, got {type(document).__name__}"
+        )
+
+    title, remainder = _split_title(document)
+    heading_matches = list(_SECTION_HEADING.finditer(remainder))
+
+    intro_end = (
+        heading_matches[0].start() if heading_matches else len(remainder)
+    )
+    sections = [Section(title, INTRO_HEADING, remainder[:intro_end].strip())]
+
+    section_ends = [match.start() for match in heading_matches[1:]]
+    section_ends.append(len(remainder))
+    for match, end in zip(heading_matches, section_ends, strict=True):
+        heading = match.group("heading").strip()
+        body = remainder[match.end():end].strip()
+        sections.append(Section(title, heading, body))
+
+    return [section for section in sections if section.body]
 
 
 def split_documents(documents: list[Document]) -> list[Chunk]:
