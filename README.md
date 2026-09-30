@@ -53,29 +53,83 @@
 
      Milestone 3. -->
 
-**Chunk 1** — source: `` — produced by: ``
+Printed with `python app.py chunks --indices 1,4,29,6,90`. Each one holds the
+answer to one of my five test questions.
+
+**Chunk 1** — source: `guide_accessibility.md#1` — produced by: `chunker.py::split_documents`
+
+Answers: *What is the easiest town in the region?*
 
 ```
+Getting around the region with limited mobility: Straightforward
+
+**Thornby Wells** is the easiest town in the region. It is flat, compact, and
+everything is within three minutes of everything else. Parking is free for two
+hours anywhere in town and the station is central. The pump room and gardens
+are level throughout.
+
+**Marchwood** has a modern tram network with level boarding on all four lines,
+running every 8 minutes on weekdays. The city museum and covered market are both
+step-free. The distances between districts are the main consideration.
+
+**Brightwater** is level along the river and through the centre. The mill museum
+is step-free. The station is a 15-minute walk from campus on flat ground, or the
+shuttle meets the four busiest arrivals.
 ```
 
-**Chunk 2** — source: `` — produced by: ``
+**Chunk 2** — source: `guide_accessibility.md#4` — produced by: `chunker.py::split_documents`
+
+Answers: *Where is the nearest full hospital?*
 
 ```
+Getting around the region with limited mobility: Practical
+
+The nearest full hospital is in Marchwood. Brightwater has a hospital;
+Kestrelford, Halden Bay, Corry Vale, Givens Mill and Elder Ness have minor
+injuries units with limited hours or nothing at all.
+
+Mobile coverage is good in the town centres and patchy on the outskirts, and
+genuinely absent in parts of Corry Vale.
 ```
 
-**Chunk 3** — source: `` — produced by: ``
+**Chunk 3** — source: `guide_elder_ness.md#3` — produced by: `chunker.py::split_documents`
+
+Answers: *How many shops does Elder Ness have?*
 
 ```
+Elder Ness: Eat and drink
+
+One pub, serving food 12 to 2 and 6 to 8, closed Mondays. A shop that sells basics and closes at 5pm and all day Sunday. That is the complete list. Visitors staying more than a night bring food with them.
 ```
 
-**Chunk 4** — source: `` — produced by: ``
+**Chunk 4** — source: `guide_brightwater.md#1` — produced by: `chunker.py::split_documents`
+
+Answers: *How many services does the railway have on Sundays?*
 
 ```
+Brightwater: Getting there
+
+The train runs to the regional hub eleven times a day on weekdays and six times on Sundays, taking 50 minutes. The station is a 15-minute walk from campus, or the shuttle meets the four busiest arrivals. Long-distance coaches stop on Verrill Street rather than at the station, which catches people out. There is no airport; the nearest is 90 minutes by road.
 ```
 
-**Chunk 5** — source: `` — produced by: ``
+**Chunk 5** — source: `guide_walking.md#0` — produced by: `chunker.py::split_documents`
+
+Answers: *What is the most walked route in the region?*
 
 ```
+Walking in the region: Easy, on good surfaces
+
+The **Brightwater river path** runs four miles upstream from the town to a weir,
+on a made surface, flat throughout. It is the most-walked route in the region
+and deservedly so. Continuing downstream from Givens Mill reaches Brightwater in
+about three hours.
+
+The **Kestrelford trackbed** follows the railway line closed in 1963 for six
+miles to the next village. Easy gradient, good surface, and the best walking in
+the region for the effort involved.
+
+**Thornby Wells** has flat, formal gardens and level streets — the region's
+most accessible town on foot.
 ```
 
 ## Sample Answer
