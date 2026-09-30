@@ -29,8 +29,39 @@
 
 ## Chunking Strategy
 
-**Chunk size:**
-**Overlap:**
+**Chunk size:** One `##` section per chunk, with no fixed character count. On
+this corpus that gives 94 chunks of 182 to 757 characters, 318 on average.
+
+**Overlap:** None.
+
+Every guide is divided into labelled sections, and each section covers one
+topic, like a town's "Getting there" or "Where to stay". So I cut at the
+headings. The starter's 800-character windows ignored them: they cut through
+the middle of sections and left scraps as short as 24 characters.
+
+Each chunk starts with the guide's title and the section name, for example
+`Brightwater: Getting there`. Most town sections never say which town they are
+about, and nine "Practical notes" sections are word-for-word the same. Without
+the header, those chunks can't be told apart.
+
+There is no overlap because a section is already a whole topic. Overlap would
+only pull in the end of the section before it, which is about something else.
+
+The paragraph before a guide's first heading has no heading of its own, so it
+becomes an "Overview" chunk. That keeps facts like Halden Bay being "a working
+fishing port of 8,000".
+
+**Where this doesn't meet criterion 4.** Criterion 4 says every chunk starts at
+a `##` heading and none is under 200 characters.
+
+- The 10 Overview chunks don't start at a `##` heading, because the intro
+  doesn't have one.
+- 3 chunks are under 200 characters: Givens Mill and Thornby Wells "Where to
+  stay" (187 and 188) and the accessibility guide's Overview (182). The two
+  "Where to stay" sections are complete, just short. I set the floor thinking
+  every real section was longer than 200, and that was wrong.
+
+I've left criterion 4 as I wrote it and will come back to it in unit 2.
 
 <!-- What about YOUR documents made you pick these numbers? Short posts and
      long sectioned guides don't want the same chunking, and "800 seemed
