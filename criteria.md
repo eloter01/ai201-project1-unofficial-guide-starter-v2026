@@ -72,6 +72,11 @@ town names, geography and transport, and one of my out-of-scope questions asks
 for the capital of Mongolia. That's a geography question put to a geography
 corpus, so I expect it to land closer to my documents than the other four do.
 
+**Measured in Milestone 4:** My five test questions scored 0.334 to 0.536 and
+the five out-of-scope questions 0.810 to 0.967, so I set the cutoff to 0.67,
+the middle of the gap. At that cutoff all five out-of-scope questions are
+refused. Mongolia was the closest, at 0.810, as I expected.
+
 ---
 
 ## 4. Chunks follow section boundaries
