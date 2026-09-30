@@ -35,6 +35,9 @@ CHUNK_OVERLAP = 120     # characters shared between neighbouring chunks
 
 # ─── Retrieval (Milestone 4) ─────────────────────────────────────────────────
 
+# 5 brings back the answer for 4 of the 5 test questions. The railway one sits
+# at rank 9, and reaching it would add four loosely related chunks to every
+# prompt, so that miss is left for unit 2 to diagnose.
 TOP_K = 5               # how many chunks to pull back per question
 
 # The relevance gate. If the best chunk is further away than this, the system
@@ -42,10 +45,10 @@ TOP_K = 5               # how many chunks to pull back per question
 #
 # LOWER IS BETTER: 0.3 is a close match, 0.9 is unrelated.
 #
-# 0.6 is a reasonable starting point, not a right answer. Milestone 4 has you
-# measure your own two groups of distances and put the cutoff in the gap.
-# Most corpora land somewhere between 0.45 and 0.75.
-THRESHOLD = 0.6
+# Measured on city_guides with section chunks: the five test questions scored
+# 0.334 to 0.536, the five OUT_OF_SCOPE questions 0.810 to 0.967. 0.67 is the
+# middle of that gap, leaving about 0.13 of room on each side.
+THRESHOLD = 0.67
 
 
 # ─── Models ──────────────────────────────────────────────────────────────────
