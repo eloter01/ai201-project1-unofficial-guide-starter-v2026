@@ -1,25 +1,15 @@
 """
 Stage 2 of the pipeline: splitting documents into chunks.
 
-⚠️ THIS IS THE FILE YOU CHANGE IN MILESTONE 3.
+`split_documents` cuts each city guide at its "##" headings, so every chunk
+is one section: one topic, such as a town's "Getting there" or "Where to
+stay". The paragraph before a guide's first heading becomes its own
+"Overview" chunk. Every chunk opens with a header naming its guide and
+section, and there is no overlap between chunks.
 
-`split_documents` below is deliberately plain. It cuts every document into
-fixed-size pieces with a fixed overlap and pays no attention to where sentences
-or paragraphs end. It works, and it is not good.
-
-On a corpus of short posts it may not cut anything at all: `campus_life` comes
-out as 88 documents and 88 chunks, because almost nothing in it reaches 800
-characters. That is the baseline, not a bug — Milestone 3 is where you decide
-whether one post should stay one chunk.
-
-Your job in Milestone 3 is to replace the *body* of `split_documents` with a
-strategy that fits the documents you actually read in Milestone 1. Keep the
-name and the shape of what it returns — the rest of the pipeline calls it, and
-your README has to name the function that produced your chunks.
-
-If you get stuck for 30 minutes, `fallback_split` is the original. Switch back
-to it, write down what you saw, and move on. That's a real observation about
-your pipeline, not giving up.
+`fallback_split` is the starter's original fixed-size chunker, kept so unit 2
+has something to compare against. It still reads CHUNK_SIZE and CHUNK_OVERLAP
+from config.py; `split_documents` uses neither.
 """
 
 import re
@@ -157,24 +147,58 @@ def parse_sections(document: Document) -> list[Section]:
     return [section for section in sections if section.body]
 
 
+def _chunk_text(section: Section) -> str:
+    """
+    Render a section as the text that gets embedded and retrieved.
+
+    Args:
+        section: The section to render.
+
+    Returns:
+        A "Guide title: Section heading" line, a blank line, then the body.
+    """
+    # Most town sections never name their town, and nine "Practical notes"
+    # sections are word-for-word identical. The header is the only thing
+    # that tells them apart, for the embedding and for whoever reads it.
+    return f"{section.guide_title}: {section.heading}\n\n{section.body}"
+
+
 def split_documents(documents: list[Document]) -> list[Chunk]:
     """
-    Split documents into chunks. ⚠️ REPLACE THE BODY OF THIS IN MILESTONE 3.
+    Split guides into chunks, one per headed section.
 
-    Right now it just calls the fallback. That is the plain, generic behaviour
-    the brief is talking about.
+    No overlap between chunks: each section is one topic, and text borrowed
+    from a neighbouring section would mix two.
 
-    When you write your own strategy, set `produced_by` to
-    "chunker.py::split_documents" so your README's Sample Chunks section names
-    the right function. `app.py chunks` prints that string for you.
+    Args:
+        documents: Guides as loaded by `ingest.load_documents`.
 
-    Things worth thinking about before you write any code:
-      - Are your documents short posts or long guides?
-      - Is the useful information in one sentence, or spread over a paragraph?
-      - Would splitting on paragraph breaks keep more thoughts intact than
-        splitting on a character count?
+    Returns:
+        Chunks in document order, numbered from 0 within each source file.
+
+    Raises:
+        TypeError: If `documents` is not a list of `Document`s.
+        ValueError: If `documents` is empty.
     """
-    return fallback_split(documents)
+    if not isinstance(documents, list):
+        raise TypeError(
+            f"expected a list of Documents, got {type(documents).__name__}"
+        )
+    if not documents:
+        raise ValueError("there are no documents to split")
+
+    chunks: list[Chunk] = []
+    for document in documents:
+        for index, section in enumerate(parse_sections(document)):
+            chunks.append(
+                Chunk(
+                    text=_chunk_text(section),
+                    source=document.source,
+                    index=index,
+                    produced_by="chunker.py::split_documents",
+                )
+            )
+    return chunks
 
 
 def describe(chunks: list[Chunk]) -> str:
