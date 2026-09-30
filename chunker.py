@@ -132,14 +132,16 @@ def parse_sections(document: Document) -> list[Section]:
     title, remainder = _split_title(document)
     heading_matches = list(_SECTION_HEADING.finditer(remainder))
 
-    intro_end = (
-        heading_matches[0].start() if heading_matches else len(remainder)
-    )
-    sections = [Section(title, INTRO_HEADING, remainder[:intro_end].strip())]
+    # The intro ends where the first heading starts, and each section ends
+    # where the next one starts. With no headings the only boundary is the
+    # end of the text, so the whole guide becomes the intro.
+    boundaries = [match.start() for match in heading_matches]
+    boundaries.append(len(remainder))
 
-    section_ends = [match.start() for match in heading_matches[1:]]
-    section_ends.append(len(remainder))
-    for match, end in zip(heading_matches, section_ends, strict=True):
+    intro = remainder[:boundaries[0]].strip()
+    sections = [Section(title, INTRO_HEADING, intro)]
+
+    for match, end in zip(heading_matches, boundaries[1:], strict=True):
         heading = match.group("heading").strip()
         body = remainder[match.end():end].strip()
         sections.append(Section(title, heading, body))
