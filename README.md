@@ -241,9 +241,26 @@ questions. The railway answer is at rank 9, and I've left that miss for unit 2.
 
      Milestone 5. -->
 
-**1.**
+**1.** I asked Claude to replace the starter's chunker with one that fits my
+guides, and to give me a plan before changing anything. It proposed splitting
+at the `##` headings, which matched my criterion 4, and planned to rewrite the
+chunker in one go. I changed how it worked: I gave it coding standards (PEP 8,
+type hints, argument checks, specific exceptions, comments only for the why)
+and had it deliver one small commit at a time, waiting for my approval before
+each. I did this so I could learn as the code went along and catch anything I
+wanted to change at each step. It paid off when the smoke test showed Claude's
+first `parse_sections` crashed on any document with no `##` headings. Because
+each change was small, the bug traced straight to one function, and the fix
+went in as its own commit that I could review.
 
-**2.**
+**2.** I asked Claude to pick five sample chunks for this README. It chose one
+chunk for each of my five test questions, and pointed out that four of the five
+came from the region-wide guides and only one from a town guide. I had it swap
+one for a town section, to test broader behaviour than one kind of document.
+The railway chunk was replaced by `Brightwater: Getting there`, which answers
+the same question. The swap showed something the first five didn't: that
+section's text never names Brightwater, so without the header line my chunker
+adds, a reader couldn't tell which town it was about.
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
