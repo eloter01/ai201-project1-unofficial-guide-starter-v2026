@@ -24,8 +24,10 @@ CORPUS = os.getenv("AI201_CORPUS", "city_guides")
 
 
 # ─── Chunking (Milestone 3) ──────────────────────────────────────────────────
-# These are deliberately plain, generic numbers. Milestone 3 is where you
-# replace them with numbers that fit the documents you actually read.
+# Only `fallback_split` reads these. `split_documents` cuts at "##" section
+# headings instead, so it needs no size or overlap. They stay at the starter's
+# numbers so the fallback is still the original baseline to compare against
+# in unit 2.
 
 CHUNK_SIZE = 800        # characters per chunk
 CHUNK_OVERLAP = 120     # characters shared between neighbouring chunks
