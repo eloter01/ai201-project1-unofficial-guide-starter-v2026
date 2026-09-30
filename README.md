@@ -168,12 +168,21 @@ most accessible town on foot.
 <!-- One complete question and answer, pasted as text, with the source line
      visible. Milestone 4. -->
 
-**Question:**
+**Question:** Where is the nearest full hospital?
 
 **Answer:**
 
 ```
+  (best distance 0.334, cutoff 0.67)
+
+According to `guide_accessibility.md`, the nearest full hospital is in Marchwood. However, `guide_givens_mill.md`, `guide_halden_bay.md`, `guide_kestrelford.md`, and `guide_marchwood.md` state that the nearest full hospital is in Brightwater.
+
+Sources retrieved: guide_accessibility.md, guide_givens_mill.md, guide_halden_bay.md, guide_kestrelford.md, guide_marchwood.md
 ```
+
+The documents disagree here: one guide says Marchwood and four town guides say
+Brightwater. The answer reports both and names each file instead of picking
+one.
 
 **My relevance cutoff:** 0.67
 
